@@ -21,12 +21,10 @@ CITY_CODE=$(cat $AUX_FILE_TXT)          # Save the city code in a variable
 
 # 2. Handle the badge image
 IMG_OUTPUT=brasao-${CITY_CODE}.png      # Create the output name
-python3 $BIN_PATH/remove_borders.py $IMG_INPUT \
-    $AUX_FILE_IMG                       # Call Python script that remove the borders of the input badge image
-#inkscape -f $AUX_FILE_IMG -h $HEIGHT -w $WIDTH \
-#    -e $GW_DIR/$BADGES_DIR/$IMG_OUTPUT  # Call Inkscape to vectorize and resize the badge output image
-convert ${AUX_FILE_IMG} -resize ${WIDTH}x${HEIGHT} \
-    $GW_DIR/$BADGES_DIR/$IMG_OUTPUT     # Call ImageMagik to resize the badge output image
+convert $IMG_INPUT -flatten -fuzz 5% -trim +repage \ 
+    -resize ${WIDTH}x${HEIGHT} -background white   \
+    -gravity center -extent ${WIDTH}x${HEIGHT}     \
+    $GW_DIR/$BADGES_DIR/$IMG_OUTPUT     # Handle image
 
 # 3. Optimize image to reduce size
 if ! [ -x "$(command -v optipng)" ]; then
@@ -34,7 +32,6 @@ if ! [ -x "$(command -v optipng)" ]; then
 fi
 
 # 4. Remove auxiliar files
-rm $AUX_FILE_IMG
 rm $AUX_FILE_TXT
 
 # 5. Notice the user where the file was stored
