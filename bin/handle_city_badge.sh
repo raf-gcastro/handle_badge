@@ -21,8 +21,7 @@ CITY_CODE=$(cat $AUX_FILE_TXT)          # Save the city code in a variable
 
 # 2. Handle the badge image
 IMG_OUTPUT=brasao-${CITY_CODE}.png      # Create the output name
-convert $IMG_INPUT -flatten -fuzz 5% -trim +repage \ 
-    -resize ${WIDTH}x${HEIGHT} -background white   \
+convert $IMG_INPUT -flatten -fuzz 5% -trim +repage -resize ${WIDTH}x${HEIGHT} -background white \
     -gravity center -extent ${WIDTH}x${HEIGHT}     \
     $GW_DIR/$BADGES_DIR/$IMG_OUTPUT     # Handle image
 
